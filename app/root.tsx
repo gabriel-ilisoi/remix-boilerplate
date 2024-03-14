@@ -1,3 +1,4 @@
+// @see https://remix.run/docs/en/main/future/vite#fix-up-css-imports
 import stylesheet from "~/tailwind.css?url";
 import {
   Links,
