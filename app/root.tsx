@@ -11,6 +11,7 @@ import { LinksFunction, LoaderFunction } from '@remix-run/node'
 import { ClerkApp, ClerkErrorBoundary } from '@clerk/remix'
 import { rootAuthLoader } from '@clerk/remix/ssr.server'
 export const loader: LoaderFunction = args => rootAuthLoader(args)
+import { roRO } from "@clerk/localizations";
 
 
 export const ErrorBoundary = ClerkErrorBoundary();
@@ -41,5 +42,5 @@ function RemixApp() {
   return <Outlet />
 }
 
-const App = ClerkApp(RemixApp)
+const App = ClerkApp(RemixApp, {localization:roRO})
 export default App
