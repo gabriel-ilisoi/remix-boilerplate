@@ -9,7 +9,7 @@ if grep -sq 'docker\|lxc' /proc/1/cgroup; then
 fi
 BUILD_CMD="cd /app; rm -rf node_modules; \
 npm install;\
-npm build;
+npm run build;
 "
 EXTRA_ARGS="-d"
 export WEB_MEM_LIMIT="1G"
@@ -22,7 +22,7 @@ if [ "$1" == "dev" ]; then
     export WEB_CMD='npm run dev'
 elif [ "$1" == "start" ]; then
     echo "Running start command"
-    export WEB_CMD="node /app/node_modules/.bin/blitz start"
+    export WEB_CMD="npx dotenv -e .env.production ./node_modules/@remix-run/serve/dist/cli.js build/server/index.js"
 elif [ "$1" == "stop" ]; then
     echo "Running stop command"
     docker-compose -f "$script_path/docker-compose.yml" down 2>&1
