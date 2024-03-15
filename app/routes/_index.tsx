@@ -1,6 +1,11 @@
-import { json, type LoaderFunctionArgs, type MetaFunction } from '@remix-run/node'
+import {
+  json,
+  type LoaderFunctionArgs,
+  type MetaFunction,
+} from '@remix-run/node'
 import { SignedIn, SignedOut, RedirectToSignIn, UserButton } from '@clerk/remix'
-import { getPosts } from '~/services/post.server';
+import { getPosts } from '~/services/post.server'
+import { getUserId } from '~/services/auth.server'
 
 export const meta: MetaFunction = () => {
   return [
@@ -9,17 +14,19 @@ export const meta: MetaFunction = () => {
   ]
 }
 
-export async function loader({ request, params }: LoaderFunctionArgs) {
+export async function loader(args: LoaderFunctionArgs) {
   // const userId = await requireUserId(request);
   // invariant(params.postId, 'await not found');
-
-  const post = await getPosts({ userId:"1" });
+  // invariant(userId, 'await not found');
+  const userId = await getUserId(args)
+  console.log(`🚀 ~ loader ~ userId:`, userId)
+  const post = await getPosts({ userId })
   console.log(`🚀 ~ loader ~ post:`, post)
-  
+
   if (!post) {
-      throw new Response('Not Found', { status: 404 });
+    throw new Response('Not Found', { status: 404 })
   }
-  return json({ post });
+  return json({ post })
 }
 
 export default function Index() {
