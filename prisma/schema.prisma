@@ -12,29 +12,19 @@ generator client {
     provider = "prisma-client-js"
 }
 
-/// @@allow('create', true)
-/// @@allow('all', auth() == this)
 model User {
-    id String @id() @default(cuid())
-    /// @email
-    email String @unique()
-    /// @password
-    /// @omit
-    /// @length(8, 16)
-    password String
-    posts Post[]
+    id String @id()
 }
 
 /// @@allow('read', auth() != null && published)
-/// @@allow('all', author == auth())
+/// @@allow('all', authorId == auth().id)
 model Post {
     id String @id() @default(cuid())
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt()
     /// @length(1, 256)
     title String
-    content String
+    body String
     published Boolean @default(false)
-    author User @relation(fields: [authorId], references: [id])
     authorId String
 }

@@ -16,16 +16,8 @@ generator client {
  * User model
  */
 model User {
-    id String @id @default(cuid())
-    email String @unique @email
-    password String @password @omit @length(8, 16)
-    posts Post[]
-
-    // everybody can signup
-    @@allow('create', true)
-
-    // full access by self
-    @@allow('all', auth() == this)
+    id String @id
+    // @@ignore
 }
 
 /**
@@ -36,14 +28,13 @@ model Post {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
     title String @length(1, 256)
-    content String
-    published Boolean @default(false)
-    author User @relation(fields: [authorId], references: [id])
+    body String
+    published Boolean @default(false)   
     authorId String
 
     // allow read for all signin users
     @@allow('read', auth() != null && published)
 
     // full access by author
-    @@allow('all', author == auth())
+    @@allow('all', authorId == auth().id)
 }

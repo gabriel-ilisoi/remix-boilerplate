@@ -8,3 +8,4 @@ node_modules
 # docker datadir
 .data
 
+.zenstack_repl_history
