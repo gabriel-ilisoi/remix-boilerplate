@@ -6,6 +6,7 @@ import {
 import { SignedIn, SignedOut, RedirectToSignIn, UserButton } from '@clerk/remix'
 import { getPosts } from '~/services/post.server'
 import { getUserId } from '~/services/auth.server'
+import { useLoaderData } from '@remix-run/react'
 
 export const meta: MetaFunction = () => {
   return [
@@ -26,13 +27,15 @@ export async function loader(args: LoaderFunctionArgs) {
   if (!post) {
     throw new Response('Not Found', { status: 404 })
   }
-  return json({ post })
+  return json({ post, userId })
 }
 
 export default function Index() {
+  const data = useLoaderData()
   return (
     <div>
       <h1 className="bg-primary">Welcome to Remix</h1>
+      <pre>{JSON.stringify(data, null, 2)}</pre>
       <div>
         <SignedIn>
           <h1>Index route</h1>
