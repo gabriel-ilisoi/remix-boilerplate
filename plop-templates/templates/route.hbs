@@ -69,7 +69,12 @@ const {{pascalCase name}}Route: FC = () => {
 {{#includes features "loader"}}
     const data = useLoaderData<typeof loader>()
 {{/includes}}
-    return <h2>{{pascalCase name}}Route</h2>
+    return (<>
+        <h2>{{pascalCase name}}Route</h2>
+{{#includes features "loader"}}
+        <pre>{JSON.stringify(data, null, 2)}</pre>
+{{/includes}}
+    </>)    
 }
 
 
