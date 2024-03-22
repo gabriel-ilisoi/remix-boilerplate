@@ -25,6 +25,9 @@ import {
 {{#includes features "error"}}
 import {useParams} from "@remix-run/react"
 {{/includes}}
+{{#includes features "loader"}}
+import {useLoaderData} from "@remix-run/react"
+{{/includes}}
 import {FC} from "react"
 
 {{#includes features "loader|action" }}
@@ -63,6 +66,9 @@ export const action: ActionFunction = async ({request, params}) => {
 
 {{/includes}}
 const {{pascalCase name}}Route: FC = () => {
+{{#includes features "loader"}}
+    const data = useLoaderData<typeof loader>()
+{{/includes}}
     return <h2>{{pascalCase name}}Route</h2>
 }
 
