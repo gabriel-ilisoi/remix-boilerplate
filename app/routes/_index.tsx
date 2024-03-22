@@ -31,7 +31,7 @@ export async function loader(args: LoaderFunctionArgs) {
 }
 
 export default function Index() {
-  const data = useLoaderData()
+  const data = useLoaderData<typeof loader>()
   return (
     <div>
       <h1 className="bg-primary">Welcome to Remix</h1>

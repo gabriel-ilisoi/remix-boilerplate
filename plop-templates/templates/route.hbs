@@ -1,0 +1,79 @@
+import type {
+{{#includes features "action"}}
+    ActionFunction,
+{{/includes}}
+{{#includes features "links"}}
+    LinkDescriptor,
+    LinksFunction,
+{{/includes}}
+{{#includes features "loader"}}
+    LoaderFunction,
+{{/includes}}
+{{#includes features "meta"}}
+    MetaFunction,
+{{/includes}}
+} from "@remix-run/node"
+
+import {
+{{#includes features "loader"}}
+    json,
+{{/includes}}
+{{#includes features "action"}}
+    redirect
+{{/includes}}
+} from "@remix-run/node"
+{{#includes features "error"}}
+import {useParams} from "@remix-run/react"
+{{/includes}}
+import {FC} from "react"
+
+{{#includes features "loader|action" }}
+import { getUserId } from '~/services/auth.server'
+{{/includes}}
+
+{{#includes features "links"}}
+export const links: LinksFunction = () => {
+    const links: LinkDescriptor[] = []
+    return links
+}
+
+{{/includes}}
+{{#includes features "meta"}}
+export const meta: MetaFunction = () => {
+  return [
+    { title: "{{pascalCase @root.name}}" },
+    { name: 'description', content: "{{pascalCase @root.name}}" },
+  ]
+}
+
+{{/includes}}
+{{#includes features "loader"}}
+export const loader: LoaderFunction = async (args) => {
+const {request, params} = args   
+const userId = await getUserId(args)
+    const data = {userId}
+    return json(data)
+}
+
+{{/includes}}
+{{#includes features "action"}}
+export const action: ActionFunction = async ({request, params}) => {
+    return redirect("/")
+}
+
+{{/includes}}
+const {{pascalCase name}}Route: FC = () => {
+    return <h2>{{pascalCase name}}Route</h2>
+}
+
+
+{{#includes features "error"}}
+export const ErrorBoundary = ({error}) => {
+    console.log(error)
+    const params = useParams()
+    return <p>Something went wrong.</p>
+}
+
+{{/includes}}
+export default {{pascalCase name}}Route
+
