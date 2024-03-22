@@ -4,6 +4,7 @@ import { ClerkApp, ClerkErrorBoundary } from '@clerk/remix'
 import { rootAuthLoader } from '@clerk/remix/ssr.server'
 import { LinksFunction, LoaderFunction } from '@remix-run/node'
 import {
+  Link,
   Links,
   Meta,
   Outlet,
@@ -50,7 +51,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <div className="container mx-auto py-4 px-6">
               {/* Add your footer content here */}
               <p className="text-base-content font-extrabold">
-                © {new Date().getFullYear()} {'eRădăuţi v3'}
+                © {new Date().getFullYear()}{' '}
+                <Link to={'/'}>{'eRădăuţi v3'}</Link>
               </p>
             </div>
           </footer>
