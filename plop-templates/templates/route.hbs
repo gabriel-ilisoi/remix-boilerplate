@@ -9,7 +9,7 @@ import type {
     LinksFunction,
 {{/includes}}
 {{#includes features "loader"}}
-    LoaderFunction,
+    LoaderFunctionArgs,
 {{/includes}}
 {{#includes features "meta"}}
     MetaFunction,
@@ -60,7 +60,7 @@ export const meta: MetaFunction = () => {
 
 {{/includes}}
 {{#includes features "loader"}}
-export const loader: LoaderFunction = async (args) => {
+export async function loader(args: LoaderFunctionArgs) {
 const {request, params} = args   
 const userId = await getUserId(args)
     const data = {userId}
