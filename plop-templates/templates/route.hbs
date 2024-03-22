@@ -1,3 +1,5 @@
+{{#includes features "action|links|loader|meta" }}
+{{#with @root}}
 import type {
 {{#includes features "action"}}
     ActionFunction,
@@ -13,7 +15,11 @@ import type {
     MetaFunction,
 {{/includes}}
 } from "@remix-run/node"
+{{/with}}
+{{/includes}}
 
+{{#includes features "action|loader" }}
+{{#with @root}}
 import {
 {{#includes features "loader"}}
     json,
@@ -22,6 +28,9 @@ import {
     redirect
 {{/includes}}
 } from "@remix-run/node"
+{{/with}}
+{{/includes}}
+
 {{#includes features "error"}}
 import {useParams} from "@remix-run/react"
 {{/includes}}
