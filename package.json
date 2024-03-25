@@ -9,9 +9,7 @@
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
     "start": "dotenv -e .env.production remix-serve ./build/server/index.js",
     "zen": "zenstack generate && dotenv -- prisma db push",
-    "typecheck": "tsc",
-    "plop": "md5sum --check --status plopfile.md5 || npm run plop:transpile && plop",
-    "plop:transpile": "echo 'Deleting plopfile and regenerate it+md5' && rimraf ./plopfile.js && tsup ./plopfile.ts --format esm --out-dir . && md5sum plopfile.ts > plopfile.md5"
+    "typecheck": "tsc"
   },
   "dependencies": {
     "@clerk/localizations": "^2.0.0-beta.17",
