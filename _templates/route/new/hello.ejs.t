@@ -27,7 +27,7 @@ export const links: LinksFunction = () => {
 <% } %>
 
 <% if (features.includes('meta')) { %>
-export const meta: MetaFunction = () => {
+export const meta: MetaFunction<% if (features.includes('loader')) { %><typeof loader><% } %> = () => {
   return [
     { title: "<%= name %>" },
     { name: 'description', content: "<%= name %>" },
@@ -59,10 +59,14 @@ export const ErrorBoundary = ({error}) => {
 <% } %>
 
 const <%= h.changeCase.pascal(name) %>Route: FC = () => {
+<% if (features.includes('loader')) { %>
     const data = useLoaderData<typeof loader>()
+<% } %>
     return (<>
         <h2><%= h.changeCase.pascal(name) %>Route</h2>
+<% if (features.includes('loader')) { %>
         <pre>{JSON.stringify(data, null, 2)}</pre>
+<% } %>
     </>)    
 }
 

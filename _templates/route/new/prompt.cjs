@@ -12,7 +12,7 @@ module.exports = [
     name: "features",
     message: "Pick features",
     loop: true,
-
+    initial:['meta','loader'],
    
     choices: [
       {
