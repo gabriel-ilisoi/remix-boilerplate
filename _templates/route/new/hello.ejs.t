@@ -26,21 +26,21 @@ export const links: LinksFunction = () => {
 }
 <% } %>
 
-<% if (features.includes('meta')) { %>
-export const meta: MetaFunction<%-(features.includes('loader'))?'<typeof loader>':'' %> = () => {
-  return [
-    { title: "<%= name %>" },
-    { name: 'description', content: "<%= name %>" },
-  ]
-}
-<% } %>
-
 <% if (features.includes('loader')) { %>
 export async function loader(args: LoaderFunctionArgs) {
 const {request, params} = args   
 const userId = await getUserId(args)
     const data = {userId}
     return json(data)
+}
+<% } %>
+
+<% if (features.includes('meta')) { %>
+export const meta: MetaFunction<%-(features.includes('loader'))?'<typeof loader>':'' %> = () => {
+  return [
+    { title: "<%= name %>" },
+    { name: 'description', content: "<%= name %>" },
+  ]
 }
 <% } %>
 
