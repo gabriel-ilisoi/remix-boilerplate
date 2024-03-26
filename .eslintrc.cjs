@@ -6,6 +6,7 @@
 
 /** @type {import('eslint').Linter.Config} */
 module.exports = {
+  "ignorePatterns": ["build/*"],
   root: true,
   parserOptions: {
     ecmaVersion: "latest",
