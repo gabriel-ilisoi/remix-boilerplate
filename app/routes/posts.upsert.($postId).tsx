@@ -39,7 +39,7 @@ export async function action(args: ActionFunctionArgs) {
     }
     return redirect('/zz')
   } catch (error) {
-    let message = 'Failed to send the body. Please try again later.'
+    let message = 'Failed to save. Please try again later.'
     if (error instanceof PrismaClientKnownRequestError) {
       message = (error.meta?.reason as string) || 'Database error'
     }
