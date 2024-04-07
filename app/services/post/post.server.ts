@@ -28,6 +28,29 @@ export function createPost({
   })
 }
 
+export function updatePost({
+  id,
+  body,
+  title,
+  userId,
+}: Pick<Post, 'body' | 'title' | 'id'> & {
+  userId: User['id']
+}) {
+  return getEnhancedPrisma(userId).post.update({
+    where: { id },    
+    data: {
+      title,
+      body,
+      // authorId: userId,
+      //   user: {
+      //     connect: {
+      //       id: userId,
+      //     },
+      //   },
+    },
+  })
+}
+
 export function getPost({
   id,
   userId,

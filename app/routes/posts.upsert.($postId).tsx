@@ -5,16 +5,23 @@ import {
   useForm,
 } from '@conform-to/react'
 import { getZodConstraint, parseWithZod } from '@conform-to/zod'
-import { redirect, type ActionFunctionArgs } from '@remix-run/node'
-import { Form, useActionData } from '@remix-run/react'
+import {
+  LoaderFunctionArgs,
+  json,
+  redirect,
+  type ActionFunctionArgs,
+} from '@remix-run/node'
+import { Form, useActionData, useLoaderData } from '@remix-run/react'
 
 import { getUserId } from '~/services/auth.server'
-import { createPost } from '~/services/post/post.server'
+import { createPost, getPost, updatePost } from '~/services/post/post.server'
 
-import { postCreateSchema as schema } from '~/services/post/post'
+import { postCreateSchema, postUpdateSchema } from '~/services/post/post'
 
 export async function action(args: ActionFunctionArgs) {
   const { request } = args
+  const { postId } = args.params
+  const schema = postId ? postUpdateSchema : postCreateSchema
   const userId = await getUserId(args)
   const formData = await request.formData()
   const submission = parseWithZod(formData, { schema })
@@ -24,7 +31,11 @@ export async function action(args: ActionFunctionArgs) {
   }
 
   try {
-    await createPost({ ...submission.value, userId })
+    if (postId) {
+      await updatePost({ ...submission.value, userId, id: postId })
+    } else {
+      await createPost({ ...submission.value, userId })
+    }
     return redirect('/zz')
   } catch (error) {
     return submission.reply({
@@ -33,13 +44,33 @@ export async function action(args: ActionFunctionArgs) {
   }
 }
 
-export default function CreatePost() {
+export async function loader(args: LoaderFunctionArgs) {
+  const userId = await getUserId(args)
+  const { postId } = args.params
+  if (!postId) {
+    return {
+      userId,
+      post: null,
+      postId,
+    }
+  }
+  const post = await getPost({ userId, id: postId })
+  const data = { userId, post, postId }
+  return json(data)
+}
+
+export default function UpsertPost() {
+  const data = useLoaderData<typeof loader>()
+  console.log(`🚀 ~ UpsertPost ~ data:`, data)
   const lastResult = useActionData<typeof action>()
+  // const schema:typeof postCreateSchema|typeof postUpdateSchema = data.postId ? postUpdateSchema : postCreateSchema
+  
+  let schema: typeof postCreateSchema|typeof postUpdateSchema = postUpdateSchema
+  if (!data.postId) {
+    schema = postCreateSchema
+  }
   const [form, fields] = useForm({
-    defaultValue: {
-      title: 'Foo',
-      body: 'Bar',
-    },
+    defaultValue: data.post || {},
     lastResult,
     constraint: getZodConstraint(schema),
     shouldValidate: 'onBlur',
@@ -64,6 +95,9 @@ export default function CreatePost() {
   return (
     <Form method="post" {...getFormProps(form)}>
       <div>
+        {!data.postId ? null : (
+          <input {...getInputProps(fields?.id, { type: 'hidden' })} />
+        )}
         <label {...labelProps} htmlFor={fields.title.id}>
           Title
         </label>

@@ -10,3 +10,9 @@ export const postCreateSchema = z.object({
     .min(10, 'Message is too short')
     .max(15, 'Message is too long'),
 })
+
+export const postUpdateSchema = postCreateSchema.merge(
+  z.object({
+    id: z.string(),
+  }),
+)
