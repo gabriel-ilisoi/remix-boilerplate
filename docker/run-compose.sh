@@ -22,7 +22,7 @@ if [ "$1" == "dev" ]; then
     export WEB_CMD='npm run dev'
 elif [ "$1" == "start" ]; then
     echo "Running start command"
-    export WEB_CMD="npx dotenv -e .env.production ./node_modules/@remix-run/serve/dist/cli.js build/server/index.js"
+    export WEB_CMD="./node_modules/@remix-run/serve/dist/cli.js build/server/index.js"
 elif [ "$1" == "stop" ]; then
     echo "Running stop command"
     docker-compose -f "$script_path/docker-compose.yml" down 2>&1

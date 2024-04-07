@@ -7,7 +7,7 @@
     "build": "rm -rf build 2>&1; remix vite:build",
     "dev": "remix vite:dev",
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
-    "start": "dotenv -e .env.production remix-serve ./build/server/index.js",
+    "start": "remix-serve ./build/server/index.js",
     "zen": "zenstack generate && dotenv -- prisma db push",
     "typecheck": "tsc"
   },
