@@ -7,9 +7,11 @@ if grep -sq 'docker\|lxc' /proc/1/cgroup; then
     echo "Cannot run inside a container"
     exit 1;
 fi
-BUILD_CMD="cd /app; rm -rf node_modules; \
+BUILD_CMD="cd /app;\
+rm -rf node_modules;\
 npm install;\
-npm run build;
+npm run zen;\
+npm run build;\
 "
 EXTRA_ARGS="-d"
 export WEB_MEM_LIMIT="1G"
@@ -22,7 +24,7 @@ if [ "$1" == "dev" ]; then
     export WEB_CMD='npm run dev'
 elif [ "$1" == "start" ]; then
     echo "Running start command"
-    export WEB_CMD="./node_modules/@remix-run/serve/dist/cli.js build/server/index.js"
+    export WEB_CMD="./node_modules/.bin/dotenv -- ./node_modules/@remix-run/serve/dist/cli.js build/server/index.js"
 elif [ "$1" == "stop" ]; then
     echo "Running stop command"
     docker-compose -f "$script_path/docker-compose.yml" down 2>&1
