@@ -17,6 +17,7 @@ import { getUserId } from '~/services/auth.server'
 import { createPost, getPost, updatePost } from '~/services/post/post.server'
 
 import { postCreateSchema, postUpdateSchema } from '~/services/post/post'
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 
 export async function action(args: ActionFunctionArgs) {
   const { request } = args
@@ -38,10 +39,14 @@ export async function action(args: ActionFunctionArgs) {
     }
     return redirect('/zz')
   } catch (error) {
+    let message = 'Failed to send the body. Please try again later.'
+    if (error instanceof PrismaClientKnownRequestError) {
+      message = (error.meta?.reason as string) || 'Database error'
+    }
     console.log(`🚀 ~ action ~ error:`, error)
     return json(
       submission.reply({
-        formErrors: ['Failed to send the body. Please try again later.'],
+        formErrors: [message],
       }),
     )
   }
@@ -70,6 +75,7 @@ export default function UpsertPost() {
   const data = useLoaderData<typeof loader>()
   console.log(`🚀 ~ UpsertPost ~ data:`, data)
   const lastResult = useActionData<typeof action>()
+  console.log(`🚀 ~ UpsertPost ~ lastResult:`, lastResult)
   // const schema:typeof postCreateSchema|typeof postUpdateSchema = data.postId ? postUpdateSchema : postCreateSchema
 
   let schema: typeof postCreateSchema | typeof postUpdateSchema =
@@ -102,10 +108,12 @@ export default function UpsertPost() {
 
   return (
     <Form method="post" {...getFormProps(form)}>
+      <div>{form.errors}</div>
+     
+      {!data.postId ? null : (
+        <input {...getInputProps(fields?.id, { type: 'hidden' })} />
+      )}
       <div>
-        {!data.postId ? null : (
-          <input {...getInputProps(fields?.id, { type: 'hidden' })} />
-        )}
         <label {...labelProps} htmlFor={fields.title.id}>
           Title
         </label>
