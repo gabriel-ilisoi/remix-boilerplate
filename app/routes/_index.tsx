@@ -3,16 +3,35 @@ import {
   type LoaderFunctionArgs,
   type MetaFunction,
 } from '@remix-run/node'
-import { SignedIn, SignedOut, RedirectToSignIn, UserButton } from '@clerk/remix'
-import { getPosts } from '~/services/post.server'
+import {
+  SignedIn,
+  SignedOut,
+  RedirectToSignIn,
+  UserButton,
+  useUser,
+} from '@clerk/remix'
+import { getPosts } from '~/services/post/post.server'
 import { getUserId } from '~/services/auth.server'
-import { useLoaderData } from '@remix-run/react'
+import { useLoaderData, useNavigate } from '@remix-run/react'
+import { useCallback, useEffect } from 'react'
 
 export const meta: MetaFunction = () => {
   return [
     { title: 'New Remix App' },
     { name: 'description', content: 'Welcome to Remix!' },
   ]
+}
+
+function useRevalidate() {
+  // We get the navigate function from React Rotuer
+  const navigate = useNavigate()
+  // And return a function which will navigate to `.` (same URL) and replace it
+  return useCallback(
+    function revalidate() {
+      navigate('.', { replace: true })
+    },
+    [navigate],
+  )
 }
 
 export async function loader(args: LoaderFunctionArgs) {
@@ -31,6 +50,13 @@ export async function loader(args: LoaderFunctionArgs) {
 }
 
 export default function Index() {
+  const { user } = useUser()
+  const revalidate = useRevalidate()
+  useEffect(() => {
+    console.log(`Reload route ${ user?.id || 'GUEST' }`)
+    revalidate()
+  }, [user?.id || 'GUEST'])
+
   const data = useLoaderData<typeof loader>()
   return (
     <div>

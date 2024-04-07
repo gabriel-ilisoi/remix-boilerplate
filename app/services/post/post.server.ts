@@ -1,5 +1,5 @@
 import type { Post, User } from '@prisma/client'
-import { getEnhancedPrisma } from './db.server'
+import { getEnhancedPrisma } from '../db.server'
 
 export function getPosts({ userId }: { userId: User['id'] }) {
   return getEnhancedPrisma(userId).post.findMany({

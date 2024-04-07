@@ -7,19 +7,11 @@ import {
 import { getZodConstraint, parseWithZod } from '@conform-to/zod'
 import { redirect, type ActionFunctionArgs } from '@remix-run/node'
 import { Form, useActionData } from '@remix-run/react'
-import { z } from 'zod'
-import { getUserId } from '~/services/auth.server'
-import { createPost } from '~/services/post.server'
 
-const schema = z.object({
-  title: z
-    .string({ required_error: 'Title is required' })
-    .min(10, 'Title is too short'),
-  body: z
-    .string({ required_error: 'Body is required' })
-    .min(10, 'Message is too short')
-    .max(15, 'Message is too long'),
-})
+import { getUserId } from '~/services/auth.server'
+import { createPost } from '~/services/post/post.server'
+
+import { postCreateSchema as schema } from '~/services/post/post'
 
 export async function action(args: ActionFunctionArgs) {
   const { request } = args
