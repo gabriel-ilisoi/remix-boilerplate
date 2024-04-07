@@ -27,7 +27,7 @@ export async function action(args: ActionFunctionArgs) {
   const submission = parseWithZod(formData, { schema })
 
   if (submission.status !== 'success') {
-    return submission.reply()
+    return json(submission.reply())
   }
 
   try {
@@ -38,14 +38,21 @@ export async function action(args: ActionFunctionArgs) {
     }
     return redirect('/zz')
   } catch (error) {
-    return submission.reply({
-      formErrors: ['Failed to send the body. Please try again later.'],
-    })
+    console.log(`🚀 ~ action ~ error:`, error)
+    return json(
+      submission.reply({
+        formErrors: ['Failed to send the body. Please try again later.'],
+      }),
+    )
   }
 }
 
 export async function loader(args: LoaderFunctionArgs) {
   const userId = await getUserId(args)
+
+  if (userId === 'GUEST') {
+    return redirect('/sign-in')
+  }
   const { postId } = args.params
   if (!postId) {
     return {
@@ -64,8 +71,9 @@ export default function UpsertPost() {
   console.log(`🚀 ~ UpsertPost ~ data:`, data)
   const lastResult = useActionData<typeof action>()
   // const schema:typeof postCreateSchema|typeof postUpdateSchema = data.postId ? postUpdateSchema : postCreateSchema
-  
-  let schema: typeof postCreateSchema|typeof postUpdateSchema = postUpdateSchema
+
+  let schema: typeof postCreateSchema | typeof postUpdateSchema =
+    postUpdateSchema
   if (!data.postId) {
     schema = postCreateSchema
   }

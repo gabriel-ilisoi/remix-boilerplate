@@ -16,7 +16,7 @@ model User {
     id String @id()
 }
 
-/// @@allow('read', auth() != null && published)
+/// @@allow('read', true)
 /// @@allow('all', authorId == auth().id)
 model Post {
     id String @id() @default(cuid())
