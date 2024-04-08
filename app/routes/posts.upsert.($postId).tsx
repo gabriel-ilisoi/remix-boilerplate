@@ -26,7 +26,7 @@ export async function loader(args: LoaderFunctionArgs) {
     const { request } = args
     const url = new URL(request.url)
     const redirectUrl = `/sign-in?redirect_url=${encodeURIComponent(
-      url.pathname + '?' + new Date().getTime(),
+      url.pathname + '?cacheBust=' + new Date().getTime(),
     )}`
     console.log(`🚀 ~ loader ~ redirectUrl:`, redirectUrl)
     return redirect(redirectUrl, { status: 302 })
