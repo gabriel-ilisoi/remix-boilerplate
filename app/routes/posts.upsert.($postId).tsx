@@ -19,6 +19,31 @@ import { createPost, getPost, updatePost } from '~/services/post/post.server'
 import { postCreateSchema, postUpdateSchema } from '~/services/post/post'
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 
+export async function loader(args: LoaderFunctionArgs) {
+  const userId = await getUserId(args)
+  console.log(`🚀 ~ loader ~ args:`, args)
+
+  if (userId === 'GUEST') {
+    const { request } = args
+    const url = new URL(request.url)
+    return redirect(
+      `/sign-in?after_sign_in_url=${encodeURIComponent(url.pathname)}`,
+    )
+  }
+  
+  const { postId } = args.params
+  if (!postId) {
+    return {
+      userId,
+      post: null,
+      postId,
+    }
+  }
+  const post = await getPost({ userId, id: postId })
+  const data = { userId, post, postId }
+  return json(data)
+}
+
 export async function action(args: ActionFunctionArgs) {
   const { request } = args
   const { postId } = args.params
@@ -50,25 +75,6 @@ export async function action(args: ActionFunctionArgs) {
       }),
     )
   }
-}
-
-export async function loader(args: LoaderFunctionArgs) {
-  const userId = await getUserId(args)
-
-  if (userId === 'GUEST') {
-    return redirect('/sign-in')
-  }
-  const { postId } = args.params
-  if (!postId) {
-    return {
-      userId,
-      post: null,
-      postId,
-    }
-  }
-  const post = await getPost({ userId, id: postId })
-  const data = { userId, post, postId }
-  return json(data)
 }
 
 export default function UpsertPost() {
@@ -109,7 +115,7 @@ export default function UpsertPost() {
   return (
     <Form method="post" {...getFormProps(form)}>
       <div>{form.errors}</div>
-     
+
       {!data.postId ? null : (
         <input {...getInputProps(fields?.id, { type: 'hidden' })} />
       )}

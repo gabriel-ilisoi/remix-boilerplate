@@ -20,11 +20,7 @@ export const meta: MetaFunction = () => {
   ]
 }
 
-
 export async function loader(args: LoaderFunctionArgs) {
-  // const userId = await requireUserId(request);
-  // invariant(params.postId, 'await not found');
-  // invariant(userId, 'await not found');
   const userId = await getUserId(args)
   console.log(`🚀 ~ loader ~ userId:`, userId)
   const post = await getPosts({ userId })
@@ -38,11 +34,6 @@ export async function loader(args: LoaderFunctionArgs) {
 
 export default function Index() {
   const data = useLoaderData<typeof loader>()
-  // const revalidate = useRevalidate()
-  // useEffect(() => {
-  //   console.log(`Reload route ${data.userId}`)
-  //   revalidate()
-  // }, [data.userId, revalidate])
 
   return (
     <div>
