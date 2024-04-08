@@ -24,15 +24,17 @@ export const links: LinksFunction = () => [
 ]
 
 export function Layout({ children }: { children: React.ReactNode }) {
+  // NOTE extensions, Adsense et. al. manipulate the document 
+  // so using suppressHydrationWarning workaround
   return (
-    <html lang="ro_RO">
-      <head>
+    <html lang="ro_RO" suppressHydrationWarning>
+      <head suppressHydrationWarning>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />
         <Links />
       </head>
-      <body>
+      <body suppressHydrationWarning>
         <div className="flex flex-col min-h-screen w-full bg-base-100">
           {/* Top Navigation Header */}
 
