@@ -40,7 +40,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
           {/* Main Content; NOTE: flex-grow flex flex-col inherits height */}
           <div className={' flex-grow flex flex-col fix-scroll'}>
-            <main className={' py-6 px-6 container mx-auto relative'}>
+            <main className={' py-6 px-6 container mx-auto flex-grow flex flex-col'}>
               {/* <div className="container mx-auto py-6 px-2"> */}
               {/* Render child components */}
               {children}
