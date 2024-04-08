@@ -1,6 +1,6 @@
 // @see https://remix.run/docs/en/main/future/vite#fix-up-css-imports
 import { roRO } from '@clerk/localizations'
-import { ClerkApp, ClerkErrorBoundary } from '@clerk/remix'
+import { ClerkApp } from '@clerk/remix'
 import { rootAuthLoader } from '@clerk/remix/ssr.server'
 import { LinksFunction, LoaderFunction } from '@remix-run/node'
 import {
@@ -17,7 +17,7 @@ import stylesheet from '~/css/tailwind.css?url'
 
 export const loader: LoaderFunction = args => rootAuthLoader(args)
 
-export const ErrorBoundary = ClerkErrorBoundary()
+// export const ErrorBoundary = ClerkErrorBoundary()
 
 export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: stylesheet },
