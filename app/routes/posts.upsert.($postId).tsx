@@ -25,9 +25,11 @@ export async function loader(args: LoaderFunctionArgs) {
   if (userId === 'GUEST') {
     const { request } = args
     const url = new URL(request.url)
-    return redirect(
-      `/sign-in?after_sign_in_url=${encodeURIComponent(url.pathname)}`,
-    )
+    const redirectUrl = `/sign-in?after_sign_in_url=${encodeURIComponent(
+      url.pathname + '?' + new Date().getTime(),
+    )}`
+    console.log(`🚀 ~ loader ~ redirectUrl:`, redirectUrl)
+    return redirect(redirectUrl, { status: 307 })
   }
 
   const { postId } = args.params

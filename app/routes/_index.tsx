@@ -9,7 +9,7 @@ import {
   type LoaderFunctionArgs,
   type MetaFunction,
 } from '@remix-run/node'
-import { useLoaderData } from '@remix-run/react'
+import { Link, useLoaderData } from '@remix-run/react'
 import { getUserId } from '~/services/auth.server'
 import { getPosts } from '~/services/post/post.server'
 
@@ -46,7 +46,7 @@ export default function Index() {
           <UserButton />
         </SignedIn>
         <SignedOut>
-          <RedirectToSignIn />
+          <Link to="/sign-in">Sign in</Link>
         </SignedOut>
       </div>
     </div>
