@@ -3,6 +3,7 @@ import { LoaderFunctionArgs } from '@remix-run/node'
 
 export async function getUserId(args: LoaderFunctionArgs) {
   const auth = await getAuth(args)
-  console.log(`🚀 ~ getUserId ~ auth:`, auth)
-  return auth.userId ? auth.userId : 'GUEST'
+  const normalizedId = auth.userId ? auth.userId : 'GUEST'
+  console.log(`🚀 ~ getUserId ~ auth:`, normalizedId)
+  return normalizedId
 }

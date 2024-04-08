@@ -21,7 +21,6 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 
 export async function loader(args: LoaderFunctionArgs) {
   const userId = await getUserId(args)
-  console.log(`🚀 ~ loader ~ args:`, args)
 
   if (userId === 'GUEST') {
     const { request } = args
@@ -30,7 +29,7 @@ export async function loader(args: LoaderFunctionArgs) {
       `/sign-in?after_sign_in_url=${encodeURIComponent(url.pathname)}`,
     )
   }
-  
+
   const { postId } = args.params
   if (!postId) {
     return {
@@ -79,10 +78,7 @@ export async function action(args: ActionFunctionArgs) {
 
 export default function UpsertPost() {
   const data = useLoaderData<typeof loader>()
-  console.log(`🚀 ~ UpsertPost ~ data:`, data)
   const lastResult = useActionData<typeof action>()
-  console.log(`🚀 ~ UpsertPost ~ lastResult:`, lastResult)
-  // const schema:typeof postCreateSchema|typeof postUpdateSchema = data.postId ? postUpdateSchema : postCreateSchema
 
   let schema: typeof postCreateSchema | typeof postUpdateSchema =
     postUpdateSchema
