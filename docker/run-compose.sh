@@ -8,7 +8,6 @@ if grep -sq 'docker\|lxc' /proc/1/cgroup; then
     exit 1;
 fi
 BUILD_CMD="cd /app;\
-rm -rf node_modules;\
 npm install;\
 npm run zen;\
 npm run build;\
