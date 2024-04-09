@@ -18,9 +18,7 @@ export default defineConfig({
   // NOTE optimizeDeps may be overkill, but sometimes throws 504 and needs manual reload
   // @see https://github.com/remix-run/remix/issues/8803
   optimizeDeps: {
-    entries:[
-      './app/**/*.{tsx}',
-    ],
+    entries: ['./app/**/*.{tsx}'],
     include: [
       '@remix-run/react',
       '@prisma/client',
