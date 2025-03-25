@@ -33,7 +33,12 @@ services:
     # run as me
     # get the ids like this:
     # export CURRENT_UID_GID=$(id -u):$(id -g)
-    user: ${CURRENT_UID}:${CURRENT_GUID}
+    # user: gaby:gaby
+    # environment:
+    #   - PUID=1000
+    #   - PGID=1000
+    #   - UMASK=002
+
 
     depends_on:
       - db

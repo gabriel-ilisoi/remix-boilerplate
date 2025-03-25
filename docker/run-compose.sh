@@ -20,7 +20,7 @@ export WEB_MEM_LIMIT="1G"
 if [ "$1" == "dev" ]; then
     echo "Running development command"
     export WEB_MEM_LIMIT="4G"
-    export WEB_CMD='npm run dev'
+    export WEB_CMD='echo "user: $(whoami) id: $(id -u) gid: $(id -g)"; ls -aln /app; npm run dev'
 elif [ "$1" == "start" ]; then
     echo "Running start command"
     export WEB_CMD="./node_modules/.bin/dotenv -- ./node_modules/.bin/remix-serve build/server/index.js"
