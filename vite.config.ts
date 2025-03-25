@@ -9,10 +9,10 @@ export default defineConfig({
   plugins: [remix(), tsconfigPaths()],
   server: {
     host: true,
-    port: 3000,
+    port: 3100,
   },
   preview: {
-    port: 3000,
+    port: 3100,
   },
 
   // NOTE optimizeDeps may be overkill, but sometimes throws 504 and needs manual reload

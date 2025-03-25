@@ -1,12 +1,6 @@
 FROM  docker.io/bitnami/node:20@sha256:f7b1c444ea539b5ec2d93aa3a7c0d4c661503011b30ce7c54f3b7282ea72c486
 ENV DEBIAN_FRONTEND noninteractive
 
-
-ARG CURRENT_UID
-ARG CURRENT_GUID
-RUN echo ARGS: ${CURRENT_UID}:${CURRENT_GUID}
-RUN groupadd -r -g ${CURRENT_GUID} gaby && useradd gaby -u${CURRENT_UID} -g${CURRENT_GUID} -m -d/home/gaby -s /bin/bash
-
 RUN install_packages iputils-ping build-essential libpq-dev openssl sudo mc locales locales-all psmisc \
 htop libjemalloc-dev \
 graphicsmagick
@@ -16,8 +10,6 @@ ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
 RUN echo "LC_ALL=en_US.UTF-8" >> /etc/environment
 RUN echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
 RUN echo "LANG=en_US.UTF-8" > /etc/locale.conf
-
-COPY sudoers /etc/sudoers
 
 # for node sharp memory leaks
 # https://github.com/lovell/sharp/issues/1803#issuecomment-1314897269
